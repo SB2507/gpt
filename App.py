@@ -1,9 +1,8 @@
 import streamlit as st
 import requests
-import pdfplumber
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from docx import Document
-from PyPDF2 import PdfFileReade
+from PyPDF2 import PdfFileReader
 
 # Set your OpenAI API key here
 openai.api_key = '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'
@@ -32,9 +31,69 @@ def extract_text_from_docx(docx_file):
     docx_text = "\n".join(para.text for para in doc.paragraphs)
     return docx_text
 
-st.title("Document AI Assistant")
+# Custom CSS styling
+st.markdown(
+    """
+    <style>
+    .chat-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+        border-radius: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .message {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        max-width: 80%;
+    }
+    .user-message {
+        text-align: right;
+        background-color: #DCF8C6;
+        align-self: flex-end;
+    }
+    .assistant-message {
+        text-align: left;
+        background-color: #E0E0E0;
+        align-self: flex-start;
+    }
+    .chat-input {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .chat-button {
+        background-color: #007BFF;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .chat-button:hover {
+        background-color: #0056b3;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-source_option = st.radio("Select Source:", ("URL", "Upload PDF", "Upload Word"))
+st.title("WhatsApp-like Document AI Assistant")
+
+# Sidebar for source selection
+source_option = st.sidebar.radio("Select Source:", ("URL", "Upload PDF", "Upload Word"))
+
+# Display WhatsApp-like chat interface
+with st.sidebar:
+    st.image("https://image.freepik.com/free-vector/whatsapp-icon_1057-2466.jpg", width=50)
+st.sidebar.title("Chat")
 
 if source_option == "URL":
     url = st.text_input("Enter the URL of the document:")
@@ -49,12 +108,15 @@ else:
         doc_text = extract_text_from_docx(uploaded_file)
 
 if "doc_text" in locals():
-    st.text("Document text:")
-    st.write(doc_text)
+    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
 
-    question = st.text_input("Ask a question:")
+    st.markdown('<div class="message user-message">', unsafe_allow_html=True)
+    st.text_area("User", key="user_message", class_="chat-input")
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    if st.button("Get Answer"):
+    question = st.text_input("Ask a question:", class_="chat-input")
+
+    if st.button("Get Answer", class_="chat-button"):
         prompt = f"Document text: {doc_text}\nQuestion: {question}\nAnswer:"
 
         response = openai.Completion.create(
@@ -64,5 +126,8 @@ if "doc_text" in locals():
         )
         answer = response.choices[0].text.strip()
 
-        st.write("Generated Answer (using OpenAI GPT-3):")
+        st.markdown('<div class="message assistant-message">', unsafe_allow_html=True)
         st.write(answer)
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('</div>', unsafe_allow_html=True)
