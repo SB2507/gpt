@@ -1,38 +1,52 @@
-# app.py
 import streamlit as st
-from PIL import Image
-import pytesseract
-import os
-import io
 import openai
-import PyPDF2
-#import python_pptx
-import docx
+from PyPDF2 import PdfFileReader
+from docx import Document
 
 # Set your OpenAI API key here
 openai.api_key = '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'
 
-st.title("AI Document Assistant")
 
-uploaded_file = st.file_uploader("Upload a file", type=["pdf", "pptx", "docx", "png", "jpg", "jpeg"])
+def extract_text_from_pdf(pdf_file):
+    pdf_text = ""
+    pdf_reader = PdfFileReader(pdf_file)
+    for page_num in range(pdf_reader.numPages):
+        page = pdf_reader.getPage(page_num)
+        pdf_text += page.extractText()
+    return pdf_text
 
-# ... rest of the code ...
+def extract_text_from_docx(docx_file):
+    doc = Document(docx_file)
+    docx_text = "\n".join(para.text for para in doc.paragraphs)
+    return docx_text
 
-# User input for the question
-question = st.text_input("Ask a question:")
+st.title("Document AI Assistant")
 
-if st.button("Get Answer"):
-    # Construct the prompt for the ChatGPT API
-    prompt = f"Document text: {text}\nQuestion: {question}\nAnswer:"
+uploaded_file = st.file_uploader("Upload a file", type=["pdf", "docx"])
 
-    # Generate a response using the ChatGPT API
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=100
-    )
-    answer = response.choices[0].text.strip()
+if uploaded_file is not None:
+    file_extension = uploaded_file.name.split('.')[-1].lower()
+    if file_extension == 'pdf':
+        doc_text = extract_text_from_pdf(uploaded_file)
+    elif file_extension == 'docx':
+        doc_text = extract_text_from_docx(uploaded_file)
+    else:
+        st.write("Unsupported file format")
+        st.stop()
 
-    # Display the generated answer
-    st.write("Generated Answer:")
-    st.write(answer)
+    st.text("Document text:")
+    st.write(doc_text)
+
+    question = st.text_input("Ask a question:")
+
+    if st.button("Get Answer"):
+        prompt = f"Document: {doc_text}\nQuestion: {question}\nAnswer:"
+        response = openai.Completion.create(
+            engine="davinci-codex",  # Use the codex engine for code-related tasks
+            prompt=prompt,
+            max_tokens=100
+        )
+        answer = response.choices[0].text.strip()
+
+        st.write("Generated Answer:")
+        st.write(answer)
