@@ -6,7 +6,7 @@ import os
 import io
 import openai
 import PyPDF2
-import python_pptx
+#import python_pptx
 import docx
 
 # Set your OpenAI API key here
