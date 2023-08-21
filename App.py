@@ -1,11 +1,12 @@
+
 import streamlit as st
 import openai
 from PyPDF2 import PdfFileReader
 from docx import Document
 
+
 # Set your OpenAI API key here
 openai.api_key = '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'
-
 
 def extract_text_from_pdf(pdf_file):
     pdf_text = ""
@@ -40,7 +41,13 @@ if uploaded_file is not None:
     question = st.text_input("Ask a question:")
 
     if st.button("Get Answer"):
-        prompt = f"Document: {doc_text}\nQuestion: {question}\nAnswer:"
+        text = doc_text.replace("\\", "\\\\").replace('"', '\\"')
+        question = question.replace("\\", "\\\\").replace('"', '\\"')
+
+        st.write("Text:", text)
+        st.write("Question:", question)
+
+        prompt = f"Document text: {text}\nQuestion: {question}\nAnswer:"
         response = openai.Completion.create(
             engine="davinci-codex",  # Use the codex engine for code-related tasks
             prompt=prompt,
