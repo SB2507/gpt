@@ -1,20 +1,25 @@
-# Use an official Python runtime as a parent image
-FROM python:3.8
+# Use the official Python image as the base image
+FROM python:3.8-slim-buster
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt /app/
+# Copy the requirements file and install dependencies
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy the Flask app files into the container
+COPY app app
 
-# Copy the rest of the application code into the container
-COPY . /app/
+# Expose the port your Flask app runs on
+EXPOSE 5000
 
-# Make port 8501 available to the world outside this container
-EXPOSE 8502
+# Set the environment variable to ensure that Python outputs everything
+# directly to the terminal without buffering it first
+ENV PYTHONUNBUFFERED 1
 
-# Run the Streamlit app when the container launches
-CMD ["streamlit", "run", "App.py", "--server.port", "8502"]
+# Set the Flask environment variable to 'production'
+ENV FLASK_ENV=production
+
+# Command to run your Flask app
+CMD ["python", "app/app.py"]
