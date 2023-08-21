@@ -1,5 +1,2 @@
-streamlit
-transformers
-PyPDF2
-openai
-pdfplumber
+nltk
+flask
