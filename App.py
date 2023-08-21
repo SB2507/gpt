@@ -1,16 +1,17 @@
 import streamlit as st
 import PyPDF2
-import openai  # Import the openai module
+import openai
+
 
 # Replace "YOUR_OPENAI_API_KEY" with your actual OpenAI API key
 openai.api_key = "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"
 
-def extract_text_from_pdf(pdf_path):
+def extract_text_from_pdf(uploaded_pdf):
     pdf_text = ""
-    with open(pdf_path, "rb") as pdf_file:
-        pdf_reader = PyPDF2.PdfReader(pdf_file)
-        for page_num in range(len(pdf_reader.pages)):
-            pdf_text += pdf_reader.pages[page_num].extract_text()
+    pdf_file = uploaded_pdf.read()  # Read the uploaded PDF content as bytes
+    pdf_reader = PyPDF2.PdfReader(pdf_file)
+    for page_num in range(len(pdf_reader.pages)):
+        pdf_text += pdf_reader.pages[page_num].extract_text()
     return pdf_text
 
 def chat_with_bot(pdf_text, user_input):
@@ -37,3 +38,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
