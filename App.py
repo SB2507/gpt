@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 
 # Set your OpenAI API key here
-openai.api_key = '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'
+openai.api_key = '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'
 def chat_with_bot(prompt):
     response = openai.Completion.create(
         engine="davinci",  # Use the 'davinci' engine for the best performance
