@@ -9,7 +9,7 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Copy the Streamlit app files into the container
-COPY app app
+COPY app
 
 # Expose the port your Streamlit app runs on
 EXPOSE 8501
