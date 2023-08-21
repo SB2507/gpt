@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import openai
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from PyPDF2 import PdfFileReader
 
