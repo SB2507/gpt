@@ -2,9 +2,3 @@ streamlit
 transformers
 PyPDF2
 openai
-requests
-pdfplumber
-docx 
-torch
-torchvision
-torchaudio
