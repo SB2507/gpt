@@ -1,6 +1,6 @@
 
 # Replace "YOUR_OPENAI_API_KEY" with your actual OpenAI API key
-openai.api_key = "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"
+#openai.api_key = "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"
 
 import streamlit as st
 from PyPDF2 import PdfReader
