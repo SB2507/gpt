@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from docx import Document
+#from docx import Document
 from PyPDF2 import PdfFileReader
 
 # Set your OpenAI API key here
@@ -26,10 +26,10 @@ def extract_text_from_pdf(pdf_file):
         pdf_text += page.extractText()
     return pdf_text
 
-def extract_text_from_docx(docx_file):
+'''def extract_text_from_docx(docx_file):
     doc = Document(docx_file)
     docx_text = "\n".join(para.text for para in doc.paragraphs)
-    return docx_text
+    return docx_text'''
 
 # Custom CSS styling
 st.markdown(
