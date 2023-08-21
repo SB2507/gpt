@@ -1,46 +1,44 @@
 import streamlit as st
-import pdfplumber
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
-import torch
+import openai
+from PyPDF2 import PdfFileReader
+from transformers import GPT3Tokenizer, GPT3LMHeadModel
 
-# Load pre-trained model and tokenizer
-model_name = "gpt2-medium"  # You can choose other models too
-tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-model = GPT2LMHeadModel.from_pretrained(model_name)
-model.eval()
+# Set your OpenAI API key here
+openai.api_key = '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'
 
-# Function to generate a response
-def generate_response(input_text, max_length=50):
-    input_ids = tokenizer.encode(input_text, return_tensors="pt")
-    with torch.no_grad():
-        output = model.generate(input_ids, max_length=max_length, num_return_sequences=1)
-    response = tokenizer.decode(output[0], skip_special_tokens=True)
-    return response
+# Load GPT-3 model and tokenizer
+tokenizer = GPT3Tokenizer.from_pretrained("EleutherAI/gpt-neo-2.7B")
+model = GPT3LMHeadModel.from_pretrained("EleutherAI/gpt-neo-2.7B")
 
-# Function to extract text from a PDF
-def extract_text_from_pdf(pdf_path):
-    with pdfplumber.open(pdf_path) as pdf:
-        text = ""
-        for page in pdf.pages:
-            text += page.extract_text()
-    return text
+def extract_text_from_pdf(pdf_file):
+    pdf_text = ""
+    pdf_reader = PdfFileReader(pdf_file)
+    for page_num in range(pdf_reader.numPages):
+        page = pdf_reader.getPage(page_num)
+        pdf_text += page.extractText()
+    return pdf_text
 
-# Streamlit app
-def main():
-    st.title("Chatbot Learning from PDFs")
-    
-    uploaded_file = st.file_uploader("Upload a PDF", type=["pdf"])
-    if uploaded_file is not None:
-        st.write("PDF Uploaded Successfully!")
+st.title("Document AI Assistant")
 
-        text = extract_text_from_pdf(uploaded_file)
-        st.write("Extracted Text:")
-        st.text_area("PDF Text", text)
+uploaded_file = st.file_uploader("Upload a PDF file", type=["pdf"])
 
-        user_input = st.text_input("You:")
-        if st.button("Send"):
-            response = generate_response(user_input)
-            st.write("Chatbot:", response)
+if uploaded_file is not None:
+    doc_text = extract_text_from_pdf(uploaded_file)
 
-if __name__ == "__main__":
-    main()
+    st.text("Document text:")
+    st.write(doc_text)
+
+    question = st.text_input("Ask a question:")
+
+    if st.button("Get Answer"):
+        prompt = f"Document text: {doc_text}\nQuestion: {question}\nAnswer:"
+
+        response = openai.Completion.create(
+            engine="text-davinci-003",  # Use the Davinci engine for text completion
+            prompt=prompt,
+            max_tokens=100
+        )
+        answer = response.choices[0].text.strip()
+
+        st.write("Generated Answer (using OpenAI GPT-3):")
+        st.write(answer)
