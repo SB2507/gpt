@@ -1,7 +1,5 @@
 streamlit
-pytesseract
-Pillow
-openai
+transformers
 PyPDF2
-python-pptx
-python-docx
+openai
+
