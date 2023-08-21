@@ -1,3 +1,4 @@
+
 # Use the official Python image as the base image
 FROM python:3.8-slim-buster
 
@@ -6,7 +7,7 @@ WORKDIR /app
 
 # Copy the requirements file and install dependencies
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt   # Change to include --no-cache-dir flag to avoid caching issues
 
 # Copy the Flask app files into the container
 COPY app app
