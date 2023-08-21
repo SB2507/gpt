@@ -22,4 +22,4 @@ ENV PYTHONUNBUFFERED 1
 ENV FLASK_ENV=production
 
 # Command to run your Flask app
-CMD ["python", "app/app.py"]
+CMD ["python", "app/App.py"]
