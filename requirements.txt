@@ -4,4 +4,9 @@ GPT3LMHeadModel
 GPT3Tokenizer
 PyPDF2
 openai
-
+requests
+pdfplumber
+docx 
+Document
+PyPDF2
+PdfFileReader
