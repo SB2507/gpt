@@ -1,7 +1,6 @@
 import streamlit as st
 import requests
 from transformers import AutoTokenizer, AutoModelForCausalLM
- 
 from PyPDF2 import PdfFileReader
 
 # Set your OpenAI API key here
