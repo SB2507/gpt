@@ -1,0 +1,7 @@
+streamlit
+pytesseract
+Pillow
+openai
+PyPDF2
+python-pptx
+python-docx
