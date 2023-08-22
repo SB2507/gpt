@@ -3,9 +3,10 @@ import PyPDF2
 
 def pdf_to_text(pdf_file):
     text = ""
-    pdf_reader = PyPDF2.PdfReader(pdf_file)
-    for page in pdf_reader.pages:
-        text += page.extract_text()
+    pdf = PyPDF2.PdfFileReader(pdf_file)
+    for page_num in range(pdf.getNumPages()):
+        page = pdf.getPage(page_num)
+        text += page.extractText()
     return text
 
 def main():
