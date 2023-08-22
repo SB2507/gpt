@@ -31,7 +31,7 @@ def main():
         text_chunks = char_text_splitter.split_text(text)
         
         # Access OpenAI API key from environment variable
-        openai_api_key = os.getenv("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")
+        openai_api_key =("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")
         
         # create embeddings
         embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)  # Pass the API key here
