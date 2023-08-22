@@ -1,12 +1,12 @@
 import streamlit as st
-import PyPDF2
+from PyPDF2 import PdfReader
 
 def pdf_to_text(pdf_file):
     text = ""
-    pdf = PyPDF2.PdfFileReader(pdf_file)
-    for page_num in range(pdf.getNumPages()):
-        page = pdf.getPage(page_num)
-        text += page.extractText()
+    pdf = PdfReader(pdf_file)
+    for page_num in range(len(pdf.pages)):
+        page = pdf.pages[page_num]
+        text += page.extract_text()
     return text
 
 def main():
