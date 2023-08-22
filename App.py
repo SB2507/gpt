@@ -34,7 +34,7 @@ def main():
         openai = os.getenv("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")
         
         # create embeddings
-        embeddings = OpenAIEmbeddings(openai_api_key=openai)  # Pass the API key here
+        embeddings = OpenAIEmbeddings(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)  # Pass the API key here
         docsearch = FAISS.from_texts(text_chunks, embeddings) 
         llm = OpenAI() 
         chain = load_qa_chain(llm, chain_type="stuff")
