@@ -19,7 +19,7 @@ def main():
         if st.button("Convert to Text"):
             extracted_text = pdf_to_text(pdf_file)
             st.subheader("Extracted Text:")
-            st.write(extracted_text)
+            st.text_area("Text", extracted_text, height=400)
 
 if __name__ == "__main__":
     main()
