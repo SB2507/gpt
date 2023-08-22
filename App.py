@@ -31,10 +31,10 @@ def main():
         text_chunks = char_text_splitter.split_text(text)
         
         # Access OpenAI API key from environment variable
-        openai_api_key = os.getenv("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")
+        openai = os.getenv("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")
         
         # create embeddings
-        embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)  # Pass the API key here
+        embeddings = OpenAIEmbeddings(openai_api_key=openai)  # Pass the API key here
         docsearch = FAISS.from_texts(text_chunks, embeddings) 
         llm = OpenAI() 
         chain = load_qa_chain(llm, chain_type="stuff")
