@@ -1,12 +1,11 @@
 import streamlit as st
-import fitz  # PyMuPDF
+import PyPDF2
 
 def pdf_to_text(pdf_file):
     text = ""
-    pdf_document = fitz.open(stream=pdf_file.read(), filetype="pdf")
-    for page_num in range(pdf_document.page_count):
-        page = pdf_document.load_page(page_num)
-        text += page.get_text("text")
+    pdf_reader = PyPDF2.PdfReader(pdf_file)
+    for page in pdf_reader.pages:
+        text += page.extract_text()
     return text
 
 def main():
