@@ -43,7 +43,7 @@ if file_type == "PDF":
             st.write(extracted_text)
             
             # Provide a download button for the extracted text
-            with st.beta_expander("Download Extracted Text"):
+            with st.expander("Download Extracted Text"):
                 st.download_button(
                     label="Download Text",
                     data=extracted_text.encode("utf-8"),
