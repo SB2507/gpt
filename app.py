@@ -28,6 +28,7 @@ if file_type == "PDF":
                 temp_pdf.write(uploaded_file.read())
                 temp_pdf_path = temp_pdf.name
             
+            # Standalone PDF text extraction
             pdf_document = fitz.open(temp_pdf_path)
             num_pages = pdf_document.page_count
             extracted_text = ""
@@ -37,8 +38,7 @@ if file_type == "PDF":
             pdf_document.close()
 
             # Perform OCR on extracted text
-            # Extracted text is set to sample text for testing purposes
-            extracted_text = ocr_text("This is a sample extracted text.")
+            extracted_text = ocr_text(extracted_text)
             
             st.subheader("Extracted Text:")
             st.write(extracted_text)
