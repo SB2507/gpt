@@ -37,7 +37,8 @@ if file_type == "PDF":
             pdf_document.close()
 
             # Perform OCR on extracted text
-            extracted_text = ocr_text(extracted_text)
+            # Extracted text is set to sample text for testing purposes
+            extracted_text = ocr_text("This is a sample extracted text.")
             
             st.subheader("Extracted Text:")
             st.write(extracted_text)
