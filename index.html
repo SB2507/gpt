@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PDF Data Extractor</title>
+</head>
+<body>
+    <h1>PDF Data Extractor</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="pdf">
+        <input type="submit" value="Extract">
+    </form>
+    {% if customer_name %}
+        <h2>Extracted Customer Name:</h2>
+        <p>{{ customer_name }}</p>
+    {% endif %}
+</body>
+</html>
