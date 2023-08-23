@@ -13,8 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the application code into the container
 COPY . /app
 
-# Expose the port that Flask runs on
-EXPOSE 5000
+# Expose the port that Streamlit runs on
+EXPOSE 8501
 
-# Command to run the Flask app
-CMD ["python", "app.py"]
+# Command to run the Streamlit app
+CMD ["streamlit", "run", "app.py"]
