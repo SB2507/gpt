@@ -1,9 +1,3 @@
-python-dotenv
 streamlit
-PyPDF2
-PyMuPDF
-langchain
-openai
-faiss-cpu
-tiktoken
-fitz 
+pdfquery
+lxml  
