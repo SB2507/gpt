@@ -22,7 +22,8 @@ if file_type == "PDF":
     if uploaded_file is not None:
         if st.button("Extract and Perform OCR"):
             # Convert PDF to text using PyMuPDF
-            pdf_document = fitz.open(uploaded_file)
+            pdf_bytes = uploaded_file.read()  # Read the uploaded file as bytes
+            pdf_document = fitz.open(pdf="pdf", stream=pdf_bytes)
             num_pages = pdf_document.page_count
             extracted_text = ""
             for page_num in range(num_pages):
