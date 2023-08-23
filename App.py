@@ -1,38 +1,26 @@
-import streamlit as st
+from flask import Flask, render_template, request
 import pdfquery
 from lxml import etree
 
-def main():
-    st.title("PDF Data Extractor")
+app = Flask(__name__)
 
-    # File upload widget
-    uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    customer_name = ""
 
-    if uploaded_file is not None:
-        pdf = pdfquery.PDFQuery(uploaded_file)
+    if request.method == 'POST':
+        pdf = pdfquery.PDFQuery(request.files['pdf'])
         pdf.load()
 
         # Convert the PDF to XML
         xml_tree = pdf.tree
         xml_text = etree.tostring(xml_tree, pretty_print=True, encoding='unicode')
 
-        st.subheader("XML Representation of PDF:")
-        st.code(xml_text, language='xml')
+        # Access the data using coordinates
+        coordinates = [68.0, 231.57, 101.990, 234.893]
+        customer_name = pdf.tree.find('LTTextLineHorizontal:in_bbox("%s, %s, %s, %s")' % tuple(coordinates)).text
 
-        st.subheader("Extracted Data from PDF:")
+    return render_template('index.html', customer_name=customer_name)
 
-        # Extract all LTTextLineHorizontal elements
-        text_elements = pdf.tree.findall('.//LTTextLineHorizontal')
-
-        extracted_data = []
-
-        for element in text_elements:
-            text = element.text.strip() if element.text else ""
-            extracted_data.append(text)
-
-        # Display extracted data
-        for idx, data in enumerate(extracted_data):
-            st.write(f"Line {idx + 1}: {data}")
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    app.run(debug=True)
