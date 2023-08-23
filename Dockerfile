@@ -1,26 +1,21 @@
-# Use the official Python image as the base image
+ # Use the official Python image as the base image
 FROM python:3.8-slim
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file into the container at /app
+# Copy the requirements file into the container
 COPY requirements.txt .
 
-# Upgrade pip
-RUN pip install --no-cache-dir --upgrade pip
-
-# Install any needed packages specified in requirements.txt
+# Install the required dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code into the container at /app
-COPY . .
+# Copy the entire current directory into the container at /app
+COPY . /app
 
-# Expose port 8501 for Streamlit
+# Expose the port that Streamlit runs on
 EXPOSE 8501
 
-# Run the Streamlit app when the container launches
+# Command to run the Streamlit app
 CMD ["streamlit", "run", "App.py"]
 
-
- 
