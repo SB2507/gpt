@@ -38,7 +38,7 @@ if uploaded_file is not None:
         extracted_text = ocr_text(extracted_text)
             
         st.subheader("Extracted Text:")
-        st.write(extracted_text)
+        st.write(ocr_text(extracted_text))
             
             # Clean up the temporary PDF file
         os.remove(temp_pdf_path)
